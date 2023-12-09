@@ -77,7 +77,7 @@ const edit = async (req, res) => {
 const remove = async (req, res) => {
     const id = req.params.id;
 
-    if (Message.exists({ _id: id })) {
+    if (await Message.exists({ _id: id })) {
         let m = await Message.deleteOne({ _id : id });
         res.json({
             status: "success",
