@@ -10,7 +10,7 @@ const create = async (req, res) => {
     res.json({
       status: "success",
       data: {
-        message: m,
+        message: m
       },
     });
   });
@@ -18,6 +18,7 @@ const create = async (req, res) => {
 
 const get = async (req, res) => {
     const m = await Message.find({});
+    console.log(m);
     res.json({
         status: "success",
         message: "GETTING messages",
@@ -28,14 +29,32 @@ const get = async (req, res) => {
 
 const getById = async (req, res) => {
     const id = req.params.id;
-    if (Message.exists({ _id: id })) {
+    try {
         const m = await Message.find({ _id : id });
         res.json({
-            status: "success",
-            message: "GETTING message " + id,
-            data: { message: m },
-        });
+        status: "success",
+        message: "GETTING message with ID " + id,
+        data: { message: m }
+    }); 
+    } catch (error) {
+        res.json({
+            status: "error",
+            message: "there is no message with ID " + id,
+        }); 
     }
+    // if ( await Message.exists({ _id: req.params.id })) {
+    //     //     const m = await Message.find({ _id : id });
+    //     res.json({
+    //     status: "success",
+    //     message: "there is a message",
+    // }); 
+    // } else {
+        // res.json({
+        //     status: "error",
+        //     message: "there is no message with ID " + id,
+        //     data : m
+        // }); 
+    // }
 };
 
 const edit = async (req, res) => {
