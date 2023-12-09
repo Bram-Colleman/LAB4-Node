@@ -26,7 +26,21 @@ const get = async (req, res) => {
     
   };
 
+const getById = async (req, res) => {
+    const id = req.params.id;
+    if (Message.exists({ _id: id })) {
+        const m = await Message.find({ _id : id });
+        res.json({
+            status: "success",
+            message: "GETTING message " + id,
+            data: { message: m },
+        });
+    }
+};
+
+
 module.exports = {
   create,
-  get
+  get,
+  getById,
 };
