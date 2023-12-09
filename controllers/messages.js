@@ -1,9 +1,20 @@
 const Message = require("../models/message.js");
 
+
 const create = async (req, res) => {
   let m = new Message();
   m.user = req.body.user;
   m.text = req.body.text;
+  if(await Message.exists({ _id : await Message.countDocuments()+1})) {
+    let id = 1;
+    while(await Message.exists({ _id : id })) {
+        id++;
+    }
+    m._id = id;
+  } else {
+      m._id = await Message.countDocuments() + 1;
+  }
+//   m._id = 911;
 
   // save  to database
   m.save().then((result) => {
@@ -29,32 +40,20 @@ const get = async (req, res) => {
 
 const getById = async (req, res) => {
     const id = req.params.id;
-    try {
+
+    if(await Message.exists({ _id : id })){
         const m = await Message.find({ _id : id });
         res.json({
-        status: "success",
-        message: "GETTING message with ID " + id,
-        data: { message: m }
-    }); 
-    } catch (error) {
+            status: "success",
+            message: "GETTING message with ID " + id,
+            data: { message: m },
+        });  
+    } else {
         res.json({
             status: "error",
             message: "there is no message with ID " + id,
         }); 
     }
-    // if ( await Message.exists({ _id: req.params.id })) {
-    //     //     const m = await Message.find({ _id : id });
-    //     res.json({
-    //     status: "success",
-    //     message: "there is a message",
-    // }); 
-    // } else {
-        // res.json({
-        //     status: "error",
-        //     message: "there is no message with ID " + id,
-        //     data : m
-        // }); 
-    // }
 };
 
 const edit = async (req, res) => {
