@@ -28,14 +28,19 @@ const create = async (req, res) => {
 };
 
 const get = async (req, res) => {
-    const m = await Message.find({});
+    let m;
+    
+    if(req.query.user){
+        m = await Message.find({ user : req.query.user});
+    } else {
+        m = await Message.find({});
+    }
     res.json({
         status: "success",
         message: "GETTING messages",
         data: { messages: m },
     });
-    
-  };
+};
 
 const getById = async (req, res) => {
     const id = req.params.id;
