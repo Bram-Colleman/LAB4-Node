@@ -14,7 +14,9 @@ const create = async (req, res) => {
   } else {
       m._id = await Message.countDocuments() + 1;
   }
-//   m._id = 911;
+  if(await Message.exists({ _id : 911 }) == false){
+      m._id = 911;
+  }
 
   // save  to database
   m.save().then((result) => {
