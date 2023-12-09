@@ -2,10 +2,9 @@ const Message = require("../models/message.js");
 
 
 const create = async (req, res) => {
-console.log(req.body);
   let m = new Message();
-  m.user = req.body.user;
-  m.text = req.body.text;
+  m.user = req.body.message.user;
+  m.text = req.body.message.text;
   if(await Message.exists({ _id : await Message.countDocuments()+1})) {
     let id = 1;
     while(await Message.exists({ _id : id })) {
