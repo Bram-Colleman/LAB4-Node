@@ -20,7 +20,8 @@ const get = async (req, res) => {
     const m = await Message.find({});
     res.json({
         status: "success",
-        messages: m,
+        message: "GETTING messages",
+        data: { messages: m },
     });
     
   };
