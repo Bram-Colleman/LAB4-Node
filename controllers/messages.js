@@ -38,9 +38,28 @@ const getById = async (req, res) => {
     }
 };
 
+const edit = async (req, res) => {
+    const id = req.params.id;
+
+    if (Message.exists({ _id: id })) {
+        let m = await Message.findById(req.params.id);
+        Object.keys(req.body).forEach(key => {
+            m[key] = req.body[key];
+        });
+        
+        m.save().then((result) => {
+            res.json({
+            status: "success",
+            message: "UPDATING message '" + m._id + "'",
+            data: { message: m },
+            });
+        });
+    }
+};
 
 module.exports = {
   create,
   get,
   getById,
+  edit
 };
