@@ -29,7 +29,7 @@ const create = async (req, res) => {
 
 const get = async (req, res) => {
     let m;
-    
+
     if(req.query.user){
         m = await Message.find({ user : req.query.user});
     } else {
@@ -83,15 +83,15 @@ const remove = async (req, res) => {
     const id = req.params.id;
 
     if (await Message.exists({ _id: id })) {
-        let m = await Message.deleteOne({ _id : id });
+        await Message.deleteOne({ _id : id });
         res.json({
             status: "success",
-            message: "DELETING message with ID " + m._id ,
+            message: "DELETING message with ID " + id ,
         });
     } else {
         res.json({
             status: "error",
-            message: "No message found with ID " + m._id ,
+            message: "No message found with ID " + id ,
         }); 
     }
 };
