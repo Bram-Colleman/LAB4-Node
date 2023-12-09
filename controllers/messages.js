@@ -50,7 +50,7 @@ const getById = async (req, res) => {
     } else {
         res.json({
             status: "error",
-            message: "there is no message with ID " + id,
+            message: "There is no message with ID " + id,
         }); 
     }
 };
@@ -59,18 +59,35 @@ const edit = async (req, res) => {
     const id = req.params.id;
 
     if (Message.exists({ _id: id })) {
-        let m = await Message.findById(req.params.id);
+        let m = await Message.findById(id);
         Object.keys(req.body).forEach(key => {
             m[key] = req.body[key];
         });
         
         m.save().then((result) => {
             res.json({
-            status: "success",
-            message: "UPDATING message '" + m._id + "'",
-            data: { message: m },
+                status: "success",
+                message: "UPDATING message with ID " + m._id,
+                data: { message: m },
             });
         });
+    }
+};
+
+const remove = async (req, res) => {
+    const id = req.params.id;
+
+    if (Message.exists({ _id: id })) {
+        let m = await Message.deleteOne({ _id : id });
+        res.json({
+            status: "success",
+            message: "DELETING message with ID " + m._id ,
+        });
+    } else {
+        res.json({
+            status: "error",
+            message: "No message found with ID " + m._id ,
+        }); 
     }
 };
 
@@ -78,5 +95,6 @@ module.exports = {
   create,
   get,
   getById,
-  edit
+  edit,
+  remove
 };
