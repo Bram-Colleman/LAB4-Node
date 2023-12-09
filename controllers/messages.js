@@ -2,6 +2,7 @@ const Message = require("../models/message.js");
 
 
 const create = async (req, res) => {
+console.log(req.body);
   let m = new Message();
   m.user = req.body.user;
   m.text = req.body.text;
@@ -29,7 +30,6 @@ const create = async (req, res) => {
 
 const get = async (req, res) => {
     const m = await Message.find({});
-    console.log(m);
     res.json({
         status: "success",
         message: "GETTING messages",
